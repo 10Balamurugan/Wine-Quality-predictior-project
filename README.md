@@ -1,195 +1,255 @@
-# 🍷 Wine Quality Analyzer — ML Project
+# 🍷 Wine Quality Analysis — Machine Learning Project
 
-A complete Machine Learning project that predicts wine quality as **Good**, **Average**, or **Bad** using physicochemical properties. Built with Scikit-learn and a polished Streamlit UI.
+A complete end-to-end ML project that predicts wine quality as **Good 🟢**, **Average 🟡**, or **Bad 🔴** using physicochemical properties of red wine.
 
 ---
 
-## 📸 Features
+## 📌 Project Overview
 
-- **3-Class Classification**: Bad (score ≤5) / Average (score 6) / Good (score ≥7)
-- **Ensemble Model**: Random Forest + Gradient Boosting (Voting Classifier)
-- **Interactive UI**: Adjust 12 wine parameters via sliders
-- **Confidence Chart**: Probability bar chart for all 3 classes
-- **Feature Importance**: Visual breakdown of what matters most
-- **Chemistry Guide**: Explainer for every wine parameter
+| Item | Details |
+|------|---------|
+| **Dataset** | UCI Wine Quality (Red Wine) — 1,599 samples |
+| **Task** | Multi-class Classification (3 classes) |
+| **Models** | Logistic Regression, Random Forest, XGBoost, SVM |
+| **Best Model** | Random Forest / XGBoost (~85–88% accuracy) |
+| **UI** | Streamlit Web App |
+| **Notebook** | Jupyter Notebook (step-by-step) |
+
+---
+
+## 🏷️ Quality Labels
+
+| Label | Score | Description |
+|-------|-------|-------------|
+| 🟢 **Good** | ≥ 7 | Premium wine with excellent taste and structure |
+| 🟡 **Average** | 5–6 | Standard quality, the most common category |
+| 🔴 **Bad** | ≤ 4 | Below average quality with noticeable flaws |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-wine_quality/
+wine_quality_project/
 │
-├── app.py               # Streamlit UI app
-├── train_model.py       # Model training script
-├── requirements.txt     # Python dependencies
-├── README.md            # This file
+├── wine_quality_analysis.ipynb   ← Full Jupyter Notebook (10 steps)
+├── app.py                        ← Streamlit Web App UI
+├── requirements.txt              ← All Python dependencies
+├── README.md                     ← This file
 │
-└── models/              # Auto-created after training
-    ├── wine_model.pkl   # Trained Voting Ensemble model
-    ├── scaler.pkl       # StandardScaler
-    ├── feature_cols.pkl # Feature column names
-    └── meta.pkl         # Accuracy & metadata
+└── model/                        ← Auto-created after running notebook
+    ├── best_model.pkl
+    ├── scaler.pkl
+    ├── label_encoder.pkl
+    └── feature_cols.pkl
 ```
 
 ---
 
-## ⚙️ Step-by-Step Setup Instructions
+## ⚙️ Installation & Setup
 
-### Step 1 — Prerequisites
-
-Make sure you have **Python 3.10+** installed.
+### Step 1 — Clone / Download the project
 
 ```bash
-python --version
+# If using git
+git clone <your-repo-url>
+cd wine_quality_project
+
+# Or just unzip the downloaded folder
+cd wine_quality_project
 ```
 
-### Step 2 — Create Virtual Environment
+### Step 2 — Create a virtual environment (recommended)
 
+**Windows (CMD):**
+```cmd
+python -m venv venv
+venv\Scripts\activate
+```
+
+**Windows (PowerShell):**
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+**Mac/Linux:**
 ```bash
-# Create venv
-python -m venv wine_env
-
-# Activate (Windows)
-wine_env\Scripts\activate
-
-# Activate (Mac/Linux)
-source wine_env/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-### Step 3 — Install Dependencies
+### Step 3 — Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4 — Train the Model
+---
+
+## 🚀 Running the Project
+
+### ▶️ Option A: Jupyter Notebook (Step-by-Step)
 
 ```bash
-python train_model.py
+jupyter notebook wine_quality_analysis.ipynb
 ```
 
-**What this does:**
-- Downloads the UCI Wine Quality dataset (red + white)
-- Maps quality scores to 3 classes (Bad / Average / Good)
-- Trains a Voting Ensemble (Random Forest + Gradient Boosting)
-- Runs 5-Fold Cross-Validation
-- Saves model artifacts to the `models/` folder
+Run all cells in order:
+1. Import Libraries
+2. Load Dataset
+3. Data Cleaning
+4. EDA (Exploratory Data Analysis)
+5. Preprocessing & Feature Engineering
+6. Model Building
+7. Model Evaluation
+8. Save Model
+9. Predict New Sample
+10. Final Summary
 
-**Expected output:**
-```
-✅ Loaded 6497 rows from UCI (red=1599, white=4898)
+---
 
-📊 Class distribution:
-   Bad (0<=5)  :  2384 (36.7%)
-   Average (6) :  2836 (43.6%)
-   Good (>=7)  :  1277 (19.7%)
+### ▶️ Option B: Streamlit Web App
 
-🔧 Training ensemble model …
-
-✅ Test Accuracy : 72.xx%
-
-📋 Classification Report:
-              precision    recall  f1-score   support
-         Bad       0.72      0.71      0.71       477
-     Average       0.73      0.78      0.75       567
-        Good       0.72      0.63      0.67       256
-
-🎉 Training complete!
-```
-
-> **Note:** If the UCI server is unreachable, the script automatically generates realistic synthetic data for training.
-
-### Step 5 — Launch the App
+> **Important:** Run the Jupyter Notebook first to train and save the model,  
+> OR the app will train the model automatically on first launch.
 
 ```bash
 streamlit run app.py
 ```
 
-The app will open at: **http://localhost:8501**
+Then open your browser at: **http://localhost:8501**
+
+**App Features:**
+- 🔮 **Predict Tab** — Use sliders to input wine properties and get instant predictions
+- 📊 **Data Explorer Tab** — Visualize the dataset, correlations, and feature distributions
+- ℹ️ **About Tab** — Project info and structure
 
 ---
 
-## 🧪 How to Use the App
+## 📊 Features (Input Variables)
 
-1. **Set Wine Type** (Red or White) in the sidebar
-2. **Adjust the 11 chemical sliders** to describe your wine
-3. Click **"🍷 Analyze Wine Quality"**
-4. View the predicted quality label + confidence chart
-5. Explore **Feature Insights** tab for importance rankings
-6. Check **About Dataset** tab for chemistry reference
+| Feature | Unit | Description |
+|---------|------|-------------|
+| Fixed Acidity | g/L | Non-volatile acids (tartaric acid) |
+| Volatile Acidity | g/L | Acetic acid content — high = vinegar taste |
+| Citric Acid | g/L | Adds freshness and flavor |
+| Residual Sugar | g/L | Sugar remaining after fermentation |
+| Chlorides | g/L | Salt content |
+| Free Sulfur Dioxide | mg/L | Prevents microbial growth and oxidation |
+| Total Sulfur Dioxide | mg/L | Bound + free SO₂ forms |
+| Density | g/mL | Related to sugar and alcohol content |
+| pH | — | Acidity scale (lower = more acidic) |
+| Sulphates | g/L | Potassium sulphate — antimicrobial |
+| Alcohol | % vol | Alcohol by volume |
 
----
-
-## 🤖 ML Pipeline
-
-| Step | Detail |
-|------|--------|
-| Dataset | UCI Wine Quality (red + white, ~6500 samples) |
-| Target | Quality score → 3 classes |
-| Preprocessing | StandardScaler (z-score normalization) |
-| Model | VotingClassifier (RF + GB, soft voting) |
-| RF Config | 300 estimators, max_depth=20 |
-| GB Config | 200 estimators, lr=0.08, max_depth=6 |
-| Validation | Stratified 5-Fold CV |
-| Metrics | Accuracy, Precision, Recall, F1-Score |
+**Engineered Features (auto-created):**
+- `alcohol_sulphates` = alcohol × sulphates
+- `acid_ratio` = fixed acidity / volatile acidity
+- `sulfur_ratio` = free SO₂ / total SO₂
 
 ---
 
-## 🍷 Quality Class Definition
+## 🤖 ML Pipeline Summary
 
-| Class | Original Score | Label | Description |
-|-------|---------------|-------|-------------|
-| 0 | ≤ 5 | ❌ Bad Quality | Noticeable flaws; high acidity or poor balance |
-| 1 | 6 | ⚠️ Average Quality | Acceptable; typical commercial wine |
-| 2 | ≥ 7 | ✅ Good Quality | Well-balanced; recommended |
+```
+Raw Data (1599 × 12)
+     ↓
+Data Cleaning
+  • Remove duplicates
+  • Winsorize outliers (1st–99th percentile)
+     ↓
+EDA
+  • Correlation heatmap
+  • Quality distribution
+  • Feature violin plots
+     ↓
+Preprocessing
+  • Label encoding (Bad=0, Average=1, Good=2)
+  • Feature engineering (3 new features)
+  • Train/Test split (80/20, stratified)
+  • StandardScaler normalization
+     ↓
+Model Training (4 models)
+  • Logistic Regression
+  • Random Forest ← Usually best
+  • XGBoost
+  • SVM
+     ↓
+Evaluation
+  • Accuracy, F1-Score
+  • 5-Fold Cross Validation
+  • Confusion Matrix
+  • Feature Importance
+     ↓
+Save & Deploy (Streamlit UI)
+```
 
 ---
 
-## 📊 Key Features & Their Importance
+## 📈 Expected Model Performance
 
-| Feature | Impact | Ideal Range |
-|---------|--------|------------|
-| Alcohol % | ⭐⭐⭐ High | 10–13% |
-| Volatile Acidity | ⭐⭐⭐ High | < 0.6 g/L |
-| Sulphates | ⭐⭐ Medium | 0.4–0.8 g/L |
-| Citric Acid | ⭐⭐ Medium | 0.25–0.5 g/L |
-| Total SO₂ | ⭐ Medium | < 150 mg/L |
-| Residual Sugar | ⭐ Low | Varies by style |
-| Chlorides | ⭐ Low | < 0.1 g/L |
-| pH | ⭐ Low | 3.0–3.5 |
+| Model | Accuracy | F1-Score |
+|-------|----------|----------|
+| Logistic Regression | ~72% | ~0.71 |
+| SVM | ~76% | ~0.75 |
+| XGBoost | ~84% | ~0.83 |
+| **Random Forest** | **~86%** | **~0.85** |
 
----
-
-## 📚 Dataset Reference
-
-> P. Cortez, A. Cerdeira, F. Almeida, T. Matos, J. Reis.
-> *Modeling wine preferences by data mining from physicochemical properties.*
-> In Decision Support Systems, Elsevier, 47(4):547-553, 2009.
-
-Dataset URL: https://archive.ics.uci.edu/ml/datasets/wine+quality
+*Results may vary slightly based on dataset version and random seed.*
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Python 3.10+**
-- **Streamlit** — Web UI
-- **Scikit-learn** — ML models
-- **Pandas / NumPy** — Data processing
-- **Matplotlib** — Visualization
-- **Joblib** — Model serialization
+| Library | Version | Purpose |
+|---------|---------|---------|
+| `pandas` | ≥1.5 | Data manipulation |
+| `numpy` | ≥1.23 | Numerical operations |
+| `scikit-learn` | ≥1.1 | ML models & preprocessing |
+| `xgboost` | ≥1.7 | Gradient boosting |
+| `matplotlib` | ≥3.6 | Plotting |
+| `seaborn` | ≥0.12 | Statistical visualization |
+| `streamlit` | ≥1.20 | Web UI |
+| `joblib` | ≥1.2 | Model serialization |
 
 ---
 
-## 🚀 Future Improvements
+## 💡 Tips for Windows Users
 
-- [ ] Add SHAP explainability (per-prediction feature contributions)
-- [ ] Upload a CSV file to batch-predict multiple wines
-- [ ] Hyperparameter tuning with GridSearchCV
-- [ ] Deploy to Streamlit Cloud / Hugging Face Spaces
-- [ ] Add XGBoost for comparison
+If you get errors running pip or Python, always use:
+```cmd
+python -m pip install <package>
+python -m jupyter notebook
+python -m streamlit run app.py
+```
+
+If you get PowerShell execution policy errors:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 ---
 
-*Built as part of Data Science curriculum at Besant Technologies, Bangalore 🇮🇳*
+## 📚 Dataset Reference
+
+**UCI Machine Learning Repository — Wine Quality**  
+P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.  
+*Modeling wine preferences by data mining from physicochemical properties.*  
+Decision Support Systems, Elsevier, 47(4):547-553, 2009.
+
+---
+
+## 🎓 Learning Outcomes
+
+After completing this project you will understand:
+- End-to-end ML project workflow
+- Data cleaning and outlier treatment
+- Feature engineering techniques
+- Model comparison and selection
+- Deploying ML models with Streamlit
+- Saving and loading trained models with joblib
+
+---
+
+*Built with ❤️ as part of Data Science & AI/ML learning at Besant Technologies*
